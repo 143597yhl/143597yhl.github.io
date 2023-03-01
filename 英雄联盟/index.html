@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>英雄联盟</title>
+    <style>
+        #box {
+            width: 30vw;
+            height: 220px;
+            position: absolute;
+            top: 10px;
+            left: 300px;
+
+        }
+
+        #bg_box {
+            width: 800px;
+            height: 410px;
+            margin: auto;
+            background-image: url(./images/big29000.webp);
+            background-size: 100% 100%;
+            position: relative;
+        }
+
+        #toux_box {
+            width: 70px;
+            height: 240px;
+            position: absolute;
+            top: 55px;
+            left: 20px;
+        }
+
+        #toux_box div {
+            width: 100%;
+            height: 70px;
+            margin-top: 7.6px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #jieshao {
+            width: 340px;
+            height: 200px;
+            position: absolute;
+            right: 30px;
+            color: white;
+        }
+
+        h4 {
+            text-align: center;
+
+        }
+
+        #jineng_box {
+            width: 340px;
+            height: 60px;
+            position: absolute;
+            right: 150px;
+            top: 230px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        #img_box {
+            width: 45px;
+            height: 50px;
+        }
+
+        #jin_jies {
+            width: 600px;
+            height: 60px;
+            padding-top: 40px;
+            position: absolute;
+            right: 10px;
+            top: 300px;
+            color: white;
+            background-color: rgba(0, 0, 0, .5);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="bg_box">
+        <div id="toux_box">
+
+        </div>
+        <div id="jieshao">
+            <h4></h4>
+            <div style="font-size: 13px;"></div>
+        </div>
+        <div id="jineng_box">
+
+        </div>
+        <div id="jin_jies">
+            <h4 style="position: absolute; left: 270px; top: -15px;"></h4>
+            <div style="font-size: 13px;"></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div id="box"></div>
+    <script src="./echarts.js"></script>
+    <script src="./homework.js"></script>
+    <script src="./jquery-3.6.0.min.js"></script>
+    <script>
+
+        for (var i = 0; i < 3; i++) {
+            let $image = $(`<div id='toux_box_rq' data-index=${i}>"<img src='${data[i].img_url}' />" </div>`)
+            $('#toux_box').append($image)
+        }
+        $('#toux_box #toux_box_rq').click(function (e) {
+            var a = $(e.target).parent().data('index')
+            $('#bg_box').css('background', `url(${data[a].big_img_url})`)
+            $("#jieshao h4").text(data[a].name)
+            $("#jieshao div").text(data[a].des)
+            $('#jineng_box').children().remove()
+            for (var i = 0; i < 5; i++) {
+                console.log(a);
+                let $image = $(`<div id='img_box' data-index=${i}><img src='${data[a].skill[i].img_url}' /> </div>`)
+                $('#jineng_box').append($image)
+                $("#jin_jies h4").text(data[a].skill[i].title)
+                $("#jin_jies div").text(data[a].skill[i].s_des)
+            }
+            $('#jineng_box #img_box').click(function (e) {
+                $("#jin_jies h4").text(data[a].skill[$(e.target).parent().data('index')].title)
+                $("#jin_jies div").text(data[a].skill[$(e.target).parent().data('index')].s_des)
+            })
+
+        })
+        for (var i = 0; i < 5; i++) {
+            let $image = $(`<div id='img_box' data-index=${i}><img src='${data[0].skill[i].img_url}' /> </div>`)
+            $('#jineng_box').append($image)
+            $("#jin_jies h4").text(data[0].skill[i].title)
+            $("#jin_jies div").text(data[0].skill[i].s_des)
+        }
+        $("#jieshao h4").text(data[0].name)
+        $("#jieshao div").text(data[0].des)
+        $('#jineng_box #img_box').click(function (e) {
+            $("#jin_jies h4").text(data[0].skill[$(e.target).parent().data('index')].title)
+            $("#jin_jies div").text(data[0].skill[$(e.target).parent().data('index')].s_des)
+        })
+
+
+        
+        
+        var chartDom = document.getElementById('box');
+        var myChart = echarts.init(chartDom);
+        var option;
+        var lineStyle = {
+            normal: {
+                width: 2,
+                opacity: 0.8
+            }
+        };
+
+
+        option = {
+            title: {
+                text: "本场评分",
+                left: 'center',
+                textStyle: {
+                    color: '#aaa'
+                }
+            },
+            
+            // 设置图表系列标记
+            legend: {
+                bottom: 10, // 系列标记位于底部,与底部的距离
+                data: ['老鼠', '火男', '亚索'],
+                itemGap: 5, // 个系列标记的间隙
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 14
+                },
+                // 单独显示, 一个显示时,其他自动隐藏
+                selectedMode: 'single'
+            },
+            // 设置雷达图中的每一项指标
+            radar: {
+                radius: '35%',
+                indicator: [
+                    { name: '攻击', max: 600 },
+                    { name: '法术', max: 600 },
+                    { name: '防御', max: 600 },
+                    { name: '上手难度', max: 100 },
+                ],
+                // 雷达图线框类型s
+                shape: 'circle',
+                // 背景圆层数
+                splitNumber: 3,
+                name: {
+                    // 文字颜色
+                    textStyle: {
+                        color: 'rgb(238, 197, 102)'
+                    }
+                },
+                // 设置背景圆的颜色, 最后一个颜色是圆心的点
+                splitLine: {
+                    lineStyle: {
+                        color: [
+                            'rgba(238, 197, 102, 0.1)', 'rgba(238, 197, 102, 0.2)',
+                            'rgba(238, 197, 102, 0.4)', 'rgba(238, 197, 102, 0.6)',
+                            'rgba(238, 197, 102, 0.8)', 'rgba(238, 197, 102, 1)'
+                        ].reverse()
+                    }
+                },
+                // 背景圆是否划分区域,显示背景
+                splitArea: {
+                    show: false
+                },
+                // 穿过圆形的直线的颜色
+                axisLine: {
+                    lineStyle: {
+                        color: 'rgba(238, 197, 102, 0.5)'
+                    }
+                }
+            },
+            series: [
+                {
+                    name: '老鼠',
+                    type: 'radar', // 雷达图
+                    lineStyle: lineStyle,
+                    data: [
+                        [500, 80, 100, 50]
+                    ],
+                    symbol: 'none',
+                    itemStyle: {
+                        color: '#F9713C'
+                    },
+                    // 各个值闭合区域的透明度
+                    areaStyle: {
+                        opacity: 0.1
+                    }
+                },
+                {
+                    name: '火男',
+                    type: 'radar',
+                    lineStyle: lineStyle,
+                    data: [
+                        [120, 500, 68, 30]
+                    ],
+                    symbol: 'none',
+                    itemStyle: {
+                        color: '#B3E4A1'
+                    },
+                    areaStyle: {
+                        opacity: 0.05
+                    }
+                },
+                { 
+                    name: '亚索',
+                    type: 'radar',
+                    lineStyle: lineStyle,
+                    data: [
+                        [500, 50, 130, 80]
+                    ],
+                    symbol: 'none',
+                    itemStyle: {
+                        color: 'rgb(238, 197, 102)'
+                    },
+                    areaStyle: {
+                        opacity: 0.05
+                    }
+                }
+            ]
+        };
+
+
+        // x && y  运算符原理   
+        // x转化为bool值为false, 不管y是什么,返回x
+        // x转化为bool值为true, 不管x是什么,返回y
+        var a = 0 && 3;
+        var b = 2 && 5;
+
+        // 通常使用&&控制一个函数是否执行
+        // x && y()  原理 如果x有值,就调用函数y, 否则, 不再调用函数y
+
+        option && myChart.setOption(option);
+    </script>
+</body>
+
+</html>
